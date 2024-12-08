@@ -5,11 +5,14 @@ import axios from "axios";
 const EditForm = ({ task, onClose, onSave }) => {
   const [tasktitle, setTasktitle] = useState(task.tasktitle);
   const [taskdescription, setTaskdescription] = useState(task.taskdescription);
+  const token = localStorage.getItem('token');
 
   const handleSave = async () => {
     try {
       const updatedTask = { tasktitle, taskdescription };
-      const response = await axios.put(`http://localhost:3000/task/${task._id}`, updatedTask);
+      const response = await axios.put(`http://localhost:3000/task/${task._id}`, updatedTask, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (response.status === 200) {
         onSave(task._id, updatedTask);
         Message.success('Task Updated Successfully');

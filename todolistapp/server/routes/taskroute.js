@@ -1,13 +1,14 @@
 import { gettask, deletetask, posttask, updatetask } from "../controller/taskcontroller.js";
+import { authUser } from "../middleware/authuser.js";
 import express from 'express';
 const router = express.Router();
 
-router.get('/', gettask);
+router.get('/', authUser, gettask);
 
-router.post('/', posttask);
+router.post('/', authUser, posttask);
 
-router.delete('/:id', deletetask);
+router.delete('/:id', authUser, deletetask);
 
-router.put('/:id', updatetask);
+router.put('/:id', authUser, updatetask);
 
 export default router;

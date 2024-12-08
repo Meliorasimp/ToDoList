@@ -11,12 +11,13 @@ const LoginPage = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/user/login', {
+      const response = await axios.post('http://localhost:3000/login', {
         email: email,
         password: password
       });
+      console.log('Successfully logged in:', response.data);
       localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+      navigate('/task');
       
     } catch (error) {
       console.error('Error logging in:', error);

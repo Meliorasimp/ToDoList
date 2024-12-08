@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 const PORT = process.env.PORT || 3000;
 
-const uri = "mongodb+srv://meliorasimp:v1TvOaPZVF5aj1S3@cluster0.n3qe5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://meliorasimp:8fbR7hrmdnsYLtof@financetrackercluster.dwbji.mongodb.net/ToDoList?retryWrites=true&w=majority";
 
 mongoose.connect(uri)
   .then(() => console.log('MongoDB connected successfully'))
@@ -19,7 +19,7 @@ mongoose.connect(uri)
 
 app.use('/task', taskrouter);
 
-app.use('/user', userrouter);
+app.use('/', userrouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

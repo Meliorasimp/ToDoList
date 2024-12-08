@@ -8,25 +8,33 @@ const Homepage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
 
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
-    axios.get('http://localhost:3000/task')
+    axios.get('http://localhost:3000/task', { headers: { Authorization: `Bearer ${token}` } })
       .then(response => setData(response.data.data))
       .catch(error => console.error('Error Fetching Data:', error));
   }, []);
 
-  const HandleDeleteButton = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:3000/task/${id}`);
-      if (response.status === 200) {
-        setData(data.filter(item => item._id !== id));
-        message.success('Task Deleted Successfully');
-      } else {
-        message.error('Failed to Delete Task');
-      }
-    } catch (error) {
-      console.error('Error in Deleting task', error);
-      message.error('Error in Deleting task');
-    }
+  const HandleDeleteButton = async (id) => { 
+    try { 
+      const token = localStorage.getItem('token'); 
+      if (!token) { 
+        throw new Error('No authentication token found'); 
+      } 
+      const response = await axios.delete(`http://localhost:3000/task/${id}`, { 
+        headers: { Authorization: `Bearer ${token}` } 
+      }); 
+      if (response.status === 200) { 
+        setData(data.filter(item => item._id !== id)); 
+        message.success('Task Deleted Successfully'); 
+      } else { 
+        message.error('Failed to Delete Task'); 
+      } 
+    } catch (error) { 
+      console.error('Error in Deleting task', error); 
+      message.error('Error in Deleting task'); 
+    } 
   };
   
   const HandleEditButton = (tasks) => {
@@ -35,6 +43,7 @@ const Homepage = () => {
   }
 
   const HandleSaveButton = (id, updatedTask) => {
+    
     setData(data.map(item => item._id === id ? { ...item, ...updatedTask } : item));
     message.success('task updated successfully');
   };
